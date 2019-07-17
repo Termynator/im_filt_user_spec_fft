@@ -13,22 +13,27 @@ from scipy.fftpack import fft2,fftfreq
 #url = input("Enter image url: ")
 url = 'https://upload.wikimedia.org/wikipedia/en/7/7d/Lenna_%28test_image%29.png'
 response = requests.get(url)
-img = np.asarray(Image.open(BytesIO(response.content)))
-
-#display image
-plt.imshow(img)
-p.tl.show
+img = np.mean(np.asarray(Image.open(BytesIO(response.content))),axis = 2)
 
 #fft image
 f = np.fft.fft2(img)
 fshift = np.fft.fftshift(f)
 magnitude_spectrum = 20*np.log(np.abs(fshift))
 
-#display fft
-plt.imshow(img)
-print(magnitude_spectrum.shape)
+#define filter
+[im_x,im_y] = img.shape
+filter = np.zeros([im_x,im_y])
+filter_radius = 50
+filter[im_x/2 - radius:im_x/2 + radius, im_y/2 - radius:imyx/2 + radius] = 1
 
-plt.imshow(magnitude_spectrum[:,:,1])
+#display fft
+plt.subplot(2,2,1)
+plt.imshow(img)
+plt.subplot(2,2,2)
+plt.imshow(magnitude_spectrum)
+plt.subplot(2,2,3)
+plt.imshow(filter)
+plt.subplot(2,2,4)
 plt.show()
 
 #user generates spectral filter
